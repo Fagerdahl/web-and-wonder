@@ -348,6 +348,110 @@ body {
   color: var(--muted);
 }
 
+/*-------------------------
+  TESTIMONIAL CAROUSEL
+-------------------------*/
+.section-testimonials {
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.testimonial-carousel {
+  max-width: 700px;
+  width: 100%;
+}
+
+.testimonial-carousel {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.testimonial-slide {
+  min-width: 100%;
+  text-align: center;
+  padding: 2rem 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.testimonial-slide.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.t-avatar {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.t-quote {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.t-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Buttons */
+.t-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(0,0,0,0.1);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.t-btn.prev { left: 0; }
+.t-btn.next { right: 0; }
+
+/* Dots */
+.t-dots {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.t-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+.t-dot.active {
+  width: 16px;
+  background: var(--accent);
+}
+
+
+
 /* RESPONSIVITET */
 
 @media (max-width: 900px) {
