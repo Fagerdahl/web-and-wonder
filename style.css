@@ -339,6 +339,111 @@ body {
   color: var(--muted);
 }
 
+.contact-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  align-items: start;
+}
+
+.contact-form {
+  background: rgba(245, 241, 234, 0.98);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(216, 203, 184, 0.9);
+  padding: 1.8rem 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.form-field input,
+.form-field textarea {
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(216, 203, 184, 0.9);
+  background: #fdf7ef;
+  outline: none;
+}
+
+.form-field textarea {
+  border-radius: 18px;
+  resize: vertical;
+  min-height: 140px;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(197, 124, 75, 0.18);
+}
+
+.contact-submit {
+  margin-top: 0.5rem;
+}
+
+.form-hint {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact-form {
+    padding: 1.5rem 1.4rem;
+  }
+}
+
+.about-photo {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+/* Zoom + förbättrad ton + bättre kontrast */
+.about-photo img {
+  width: 130%;
+  height: 130%;
+  object-fit: cover;
+  object-position: center 20%; /* justerar uppåt så ansiktet centreras */
+  filter: 
+    brightness(1.1) 
+    contrast(1.15)
+    saturate(1.05)
+    sepia(60%)
+    drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+/* hover-effekt */
+.about-photo:hover img {
+  transform: scale(1.08);
+  filter:
+    brightness(1.25)
+    contrast(1.2)
+    saturate(1.08)
+    sepia(60%);
+}
+
 /* FOOTER */
 
 .site-footer {
@@ -450,6 +555,27 @@ body {
   background: var(--accent);
 }
 
+.body-logo-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vw;               /* ändra storlek här */
+  opacity: 0.09;             /* hur tydlig loggan ska vara */
+  z-index: -1;               /* bakom allt innehåll */
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes slowMove {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-49%) translateY(3px); }
+}
+
+.logo-watermark {
+  animation: fadeWatermark 2s ease-out forwards,
+             slowMove 8s ease-in-out infinite alternate;
+}
 
 
 /* RESPONSIVITET */

@@ -23,6 +23,9 @@
     </head>
 
     <body>
+
+    <img src="logga.png" alt="" class="body-logo-bg" />
+
       <header class="site-header">
         <div class="brand">
           <a href="#" class="brand-name" style="color: black; font-size: 1.5rem; text-decoration: none;">Web & Wonder</a>
@@ -55,6 +58,11 @@
         </div>
 
         <div class="hero-panel">
+          <img
+    src="images/webwonder-watermark.png"
+    alt=""
+    class="hero-watermark"
+  />
           <div class="hero-tag">
             <span class="hero-tag-label">Fokus</span>
             <span class="hero-tag-value">Användarupplevelse · Digital Närvaro · Design </span>
@@ -192,6 +200,10 @@
       <section id="om" class="section">
         <header class="section-header">
           <h2>Om mig</h2>
+          <div class="about-photo">
+  <img src="ronja.jpeg" alt="Ronja Fagerdahl" />
+</div>
+
           <p>
             Mjuk teknik, starka resultat - med fokus på människan bakom skärmen.
           </p>
@@ -201,9 +213,9 @@
           <div>
             <p>
                 <strong>Mitt namn är Ronja Fagerdahl.</strong> <br>
-              Jag har en frilansverksamhet inom webbutveckling och teknisk produktion. 
+              Jag har en frilansverksamhet inom webbutveckling och teknisk produktion. <br>
               Jag arbetar i skärningspunkten mellan <strong>teknik, design & berättande.</strong> <br>
-<br>För mig handlar digitala upplevelser inte bara om kod och funktion - utan om känsla, flöde och mänsklig närvaro.
+<br>För mig handlar digitala upplevelser inte bara om kod och funktion - utan om känsla, flöde och mänsklig närvaro. <br>
               Tekniska lösningar som är lika genomtänkta under ytan som de är starka visuellt - är min melodi. <br><br>
             <strong>Förmågan att fånga genuina ögonblick och omvandla dem till visuella berättelser som berör, är mitt signum. </strong>
               
@@ -235,30 +247,62 @@ Enhetstester · E2E · TDD-principer & CI-driven testautomation
         </div>
       </section>
 
-      <section id="kontakt" class="section section-alt">
-        <header class="section-header">
-          <h2>Kontakt</h2>
-          <p>
-            Berätta kort vad du behöver hjälp med, så återkommer jag med förslag.
-          </p>
-        </header>
+   <section id="kontakt" class="section section-alt">
+  <header class="section-header">
+    <h2>Kontakt</h2>
+    <p>
+      Berätta kort vad du behöver hjälp med, så återkommer jag till dig.
+    </p>
+  </header>
 
-        <div class="contact-block">
-          <p class="contact-line">
-            Mail: <a href="mailto:ronjafagerdahl@gmail.com">ronjafagerdahl@gmail.com</a>
-          </p>
-          <p class="contact-line">
-            LinkedIn:
-            <a href="https://www.linkedin.com/in/ronja-fagerdahl" target="_blank" rel="noreferrer">
-              www.linkedin.com/in/ronja-fagerdahl
-            </a>
-          </p>
-          <p class="contact-note">
-            Du kan också bara skicka en kort beskrivning av dina önskemål - så
-            tar vi det därifrån.
-          </p>
-        </div>
-      </section>
+  <div class="contact-layout">
+    <div class="contact-block">
+      <p class="contact-line">
+        Mail: <a href="mailto:ronjafagerdahl@gmail.com">ronjafagerdahl@gmail.com</a>
+      </p>
+      <p class="contact-line">
+        LinkedIn:
+        <a href="https://www.linkedin.com/in/ronja-fagerdahl" target="_blank" rel="noreferrer">
+          www.linkedin.com/in/ronja-fagerdahl
+        </a>
+      </p>
+      <p class="contact-note">
+        Du kan skriva direkt här på sidan eller via mail/LinkedIn <br>
+        - det som känns enklast för dig! 
+      </p>
+    </div>
+
+    <form
+      class="contact-form"
+      action="https://formspree.io/f/XXXXXXXX"
+      method="POST"
+    >
+      <div class="form-field">
+        <label for="name">Namn</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <div class="form-field">
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-field">
+        <label for="message">Meddelande</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+      </div>
+
+      <button type="submit" class="button primary contact-submit">
+        Skicka meddelande
+      </button>
+
+      <p class="form-hint">
+        Jag återkommer så snart jag kan - oftast inom 1–2 arbetsdagar.
+      </p>
+    </form>
+  </div>
+</section>
+
     </main>
 
     <footer class="site-footer">
