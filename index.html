@@ -20,24 +20,32 @@
     />
     <link rel="stylesheet" href="./style.css" />
     <script defer src="./main.js"></script>
-    </head>
-
+  </head>
     <body>
 
-    <img src="logga.png" alt="" class="body-logo-bg" />
+    <img src="loggasmaller.webp" alt="" class="body-logo-bg" />
 
-      <header class="site-header">
-        <div class="brand">
-          <a href="#" class="brand-name" style="color: black; font-size: 1.5rem; text-decoration: none;">Web & Wonder</a>
-        </div>
+   <header class="site-header">
+  <div class="brand">
+    <a href="#" class="brand-name" style="color: black; font-size: 1.5rem; text-decoration: none;">
+      Web & Wonder
+    </a>
+  </div>
 
-        <nav class="main-nav">
-          <a href="#tjanster">Tjänster</a>
-          <a href="#process">Process</a>
-          <a href="#om">Om mig</a>
-          <a href="#kontakt">Kontakt</a>
-        </nav>
-      </header>
+  <button class="nav-toggle" type="button" aria-label="Öppna meny" aria-expanded="false" aria-controls="mainNav">
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+  </button>
+
+  <nav class="main-nav" id="mainNav">
+    <a href="#tjanster">Tjänster</a>
+    <a href="#process">Process</a>
+    <a href="#om">Om mig</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+</header>
+
 
       <main>
       <!-- HERO -->
@@ -46,7 +54,7 @@
           <p class="eyebrow">Frilans webbutveckling & digitalt skapande</p>
           <h1>Digitala upplevelser med värme, precision och edge.</h1>
           <p class="hero-text">
-            Jag hjälper företag att skapa varma, genomtänkta digitala produkter
+            Jag hjälper företag att skapa genomtänkta digitala produkter
             som känns mänskliga - byggda med modern teknik och finkänsla för
             detaljer.
           </p>
@@ -65,11 +73,11 @@
   />
           <div class="hero-tag">
             <span class="hero-tag-label">Fokus</span>
-            <span class="hero-tag-value">Användarupplevelse · Digital Närvaro · Design </span>
+            <span class="hero-tag-value"> Användarupplevelse · Digital närvaro · Design </span>
           </div>
           <div class="hero-tag">
-            <span class="hero-tag-label">Topp kompetenser</span>
-            <span class="hero-tag-value">Mjukvaruutveckling · Reklamfilm · Interaktionsdesign </span>
+            <span class="hero-tag-label"> Topp kompetenser</span>
+            <span class="hero-tag-value"> Webbutveckling · Interaktionsdesign · Digital storytelling </span>
           </div>
         </div>
       </section>
@@ -79,7 +87,7 @@
         <header class="section-header">
           <h2>Tjänster</h2>
           <p>
-            Jag förvandlar idéer och visioner till levande & genomtänkta digitala upplevelser.
+            Jag förvandlar idéer och visioner till minnesvärda digitala upplevelser.
           </p>
         </header>
 
@@ -87,25 +95,23 @@
           <article class="card">
             <h3>Hemsidor</h3>
             <p>
-               Jag bygger skräddarsydda hemsidor som känns både trygga och vassa - med fokus på
-      prestanda, interaktionsdesign, IT-säkerhet och visuellt helhetsintryck.
-      Från första skiss till lanserad sida.
+               Jag bygger skräddarsydda hemsidor som känns både trygga och skarpa – med fokus på prestanda, 
+               interaktionsdesign och ett genomtänkt helhetsintryck.
             </p>
           </article>
           <article class="card">
             <h3>Reklamfilmer</h3>
     <p>
-      Jag hjälper dig att nå ut med berättelser som fångar och engagerar. 
-      Jag planerar, filmar och klipper material anpassat för webben, så att ditt varumärke syns med dina största budskap som ledstjärna.
+      Jag skapar berättelser som fångar och engagerar. <br>
+      Jag planerar, filmar och klipper material anpassat för sociala medier, så att ditt varumärke får stråla med dina största budskap som ledstjärna.
     </p>
           </article>
 
           <article class="card">
             <h3>Smarta digitala lösningar</h3>
             <p>
-      Jag bygger mindre system, verktyg och funktioner som gör din vardag enklare -
-  allt från bokningslösningar till specialanpassade funktioner och integrationer mot befintliga CMS.
-  Stabil kod, tydlig struktur och ansvarsfördelning. Jag tar fram lösningar som känns logiska och lätta att använda.
+      Jag bygger mindre digitala system och funktioner som löser konkreta problem i vardagen - till exempel bokningslösningar, formulär med smart hantering, kundportaler och specialanpassade funktioner.
+Lösningarna är stabila, välstrukturerade och enkla att bygga vidare på. 
     </p>
           </article>
         </div>
@@ -201,10 +207,10 @@
         <header class="section-header">
           <h2>Om mig</h2>
           <div class="about-photo">
-  <img src="ronja.jpeg" alt="Ronja Fagerdahl" />
+  <img src="ronjaprofil.webp" alt="Ronja Fagerdahl" />
 </div>
 
-          <p>
+          <p class ="about-tagline">
             Mjuk teknik, starka resultat - med fokus på människan bakom skärmen.
           </p>
         </header>
@@ -217,31 +223,60 @@
               Jag arbetar i skärningspunkten mellan <strong>teknik, design & berättande.</strong> <br>
 <br>För mig handlar digitala upplevelser inte bara om kod och funktion - utan om känsla, flöde och mänsklig närvaro. <br>
               Tekniska lösningar som är lika genomtänkta under ytan som de är starka visuellt - är min melodi. <br><br>
-            <strong>Förmågan att fånga genuina ögonblick och omvandla dem till visuella berättelser som berör, är mitt signum. </strong>
+            <strong class="punchline">Förmågan att fånga genuina ögonblick och omvandla dem till visuella berättelser som berör, är mitt signum. </strong>
               
               </p>
           </div>
           <div class="about-meta">
             <div>
               <span class="meta-label">Styrkor</span>
-              <span class="meta-value">Helhetsupplevelse & Detaljkänsla</span>
+              <span class="meta-value">Helhetsupplevelse · Detaljkänsla · Teknisk precision</span>
             </div>
             <div>
-              <span class="meta-label">Teknisk stack</span>
+              
+<button class="tech-trigger" aria-haspopup="dialog">
+  Visa teknisk stack
+</button>
 
-<strong>Programmeringsspråk:</strong> <br>
-              JavaScript, HTML, CSS, JAVA, C# <br>
+<div class="tech-modal" id="techModal" aria-hidden="true">
+  <div class="tech-modal-backdrop"></div>
 
-<strong>Backend:</strong> <br>
-Java, Jakarta EE, Node.js <br>
-<strong>Frontend:</strong> <br>
-React, Next.js, JSX, Tailwind CSS, Sass, Figma <br>
-<strong>Databaser:</strong> <br>
-MongoDB, SQL <br>
-<strong>DevOps & Verktyg:</strong> <br> Git/GitHub, Vite, CI/CD with GitHub Actions, automatiserad testning, Docker <br>
-<strong>Testning & Kvalitet:</strong> <br>
-Enhetstester · E2E · TDD-principer & CI-driven testautomation
-</span>
+  <div class="tech-modal-content" role="dialog" aria-modal="true">
+    <button class="tech-modal-close" aria-label="Stäng">×</button>
+
+    <h3>Teknisk stack & arbetssätt</h3>
+
+    <p class="tech-intro">
+      Jag väljer och växer med lösningar utifrån funktion, prestanda och långsiktig hållbarhet.
+    </p>
+
+    <div class="tech-section">
+      <strong>Programmeringsspråk</strong>
+      <span>JavaScript · HTML · CSS · Java · C#</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>Frontend</strong>
+      <span>React · Next.js · JSX · Tailwind CSS · Sass · Figma</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>Backend</strong>
+      <span>Node.js · Java · Jakarta EE</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>Databaser</strong>
+      <span>MongoDB · SQL</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>DevOps & kvalitet</strong>
+      <span>Git/GitHub · CI/CD · Docker · Automatiserad testning · TDD</span>
+    </div>
+  </div>
+</div>
+
             </div>
           </div>
         </div>
@@ -274,7 +309,7 @@ Enhetstester · E2E · TDD-principer & CI-driven testautomation
 
     <form
       class="contact-form"
-      action="https://formspree.io/f/XXXXXXXX"
+      action="https://formspree.io/f/mvgedrvz"
       method="POST"
     >
       <div class="form-field">
@@ -299,6 +334,8 @@ Enhetstester · E2E · TDD-principer & CI-driven testautomation
       <p class="form-hint">
         Jag återkommer så snart jag kan - oftast inom 1–2 arbetsdagar.
       </p>
+      <input type="hidden" name="_subject" value="Ny förfrågan från Web & Wonder">
+<input type="hidden" name="_template" value="table">
     </form>
   </div>
 </section>
