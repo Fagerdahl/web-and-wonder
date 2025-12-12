@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web & Wonder – Frilans webbutveckling med finkänsla</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./main.js"></script>
+  </head>
+    <body>
+
+    <img src="loggasmaller.webp" alt="" class="body-logo-bg" />
+
+   <header class="site-header">
+  <div class="brand">
+    <a href="#" class="brand-name" style="color: black; font-size: 1.5rem; text-decoration: none;">
+      Web & Wonder
+    </a>
+  </div>
+
+  <button class="nav-toggle" type="button" aria-label="Öppna meny" aria-expanded="false" aria-controls="mainNav">
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+    <span class="nav-toggle-bar"></span>
+  </button>
+
+  <nav class="main-nav" id="mainNav">
+    <a href="#tjanster">Tjänster</a>
+    <a href="#process">Process</a>
+    <a href="#om">Om mig</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+</header>
+
+
+      <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Frilans webbutveckling & digitalt skapande</p>
+          <h1>Digitala upplevelser med värme, precision och edge.</h1>
+          <p class="hero-text">
+            Jag hjälper företag att skapa genomtänkta digitala produkter
+            som känns mänskliga - byggda med modern teknik och finkänsla för
+            detaljer.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#kontakt" class="button primary">Boka ett samtal</a>
+            <a href="#tjanster" class="button ghost">Se vad jag erbjuder</a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <img
+    src="images/webwonder-watermark.png"
+    alt=""
+    class="hero-watermark"
+  />
+          <div class="hero-tag">
+            <span class="hero-tag-label">Fokus</span>
+            <span class="hero-tag-value"> Användarupplevelse · Digital närvaro · Design </span>
+          </div>
+          <div class="hero-tag">
+            <span class="hero-tag-label"> Topp kompetenser</span>
+            <span class="hero-tag-value"> Webbutveckling · Interaktionsdesign · Digital storytelling </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- TJÄNSTER -->
+      <section id="tjanster" class="section">
+        <header class="section-header">
+          <h2>Tjänster</h2>
+          <p>
+            Jag förvandlar idéer och visioner till minnesvärda digitala upplevelser.
+          </p>
+        </header>
+
+        <div class="grid cards">
+          <article class="card">
+            <h3>Hemsidor</h3>
+            <p>
+               Jag bygger skräddarsydda hemsidor som känns både trygga och skarpa – med fokus på prestanda, 
+               interaktionsdesign och ett genomtänkt helhetsintryck.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Reklamfilmer</h3>
+    <p>
+      Jag skapar berättelser som fångar och engagerar. <br>
+      Jag planerar, filmar och klipper material anpassat för sociala medier, så att ditt varumärke får stråla med dina största budskap som ledstjärna.
+    </p>
+          </article>
+
+          <article class="card">
+            <h3>Smarta digitala lösningar</h3>
+            <p>
+      Jag bygger mindre digitala system och funktioner som löser konkreta problem i vardagen - till exempel bokningslösningar, formulär med smart hantering, kundportaler och specialanpassade funktioner.
+Lösningarna är stabila, välstrukturerade och enkla att bygga vidare på. 
+    </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-testimonials">
+  <header class="section-header">
+    <h2>Kundomdömen</h2>
+  </header>
+
+  <div class="testimonial-carousel">
+
+    <div class="testimonial-track">
+
+      <article class="testimonial-slide active">
+        <div class="t-avatar">✨</div>
+        <p class="t-quote">“Ronja har grym känsla för detaljer och lämnar avtryck med sin kreativitet.”</p>
+        <p class="t-name">Mattias · Företagare</p>
+      </article>
+
+      <article class="testimonial-slide">
+        <div class="t-avatar">✨</div>
+        <p class="t-quote">“Reklamfilmen stack ut i flödet och gav oss mycket mer engagemang än tidigare.”</p>
+        <p class="t-name">Ann-Sofi · Företagare</p>
+      </article>
+
+      <article class="testimonial-slide">
+        <div class="t-avatar">✨</div>
+        <p class="t-quote">“Den tungaste - Osv+ !”</p>
+        <p class="t-name">Pasi · Privatperson</p>
+      </article>
+
+    </div>
+
+    <button class="t-btn prev">‹</button>
+    <button class="t-btn next">›</button>
+
+    <div class="t-dots">
+      <button class="t-dot active" data-index="0"></button>
+      <button class="t-dot" data-index="1"></button>
+      <button class="t-dot" data-index="2"></button>
+    </div>
+
+  </div>
+</section>
+
+
+      <section id="process" class="section section-alt">
+        <header class="section-header">
+          <h2>Så jobbar jag</h2>
+          <p>
+            En tydlig, lugn och strukturerad process - där du vet vad som händer & när.
+          </p>
+        </header>
+
+        <ol class="process-list">
+          <li>
+            <span class="process-step">01</span>
+            <div>
+              <h3>Lyssna & förstå</h3>
+              <p>
+                Jag lyssnar på vad du behöver hjälp med och hur du vill nå ut digitalt. <br>
+                Behöver du en hemsida, ett bokningssystem till din B&B eller en reklamfilm för sociala medier? <br>
+                Vi bollar idéer och kartlägger tillsammans.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="process-step">02</span>
+            <div>
+              <h3>Skiss & design</h3>
+              <p>
+                Jag tar fram en en första visuell riktning som vi stämmer av tillsammans. <br>
+                När vi är överens tar jag fram en mer detaljerad design eller prototyp.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="process-step">03</span>
+            <div>
+              <h3>Bygga & leverera</h3>
+              <p>
+                När våra visioner är synkade börjar jag bygga din lösning. <br>
+                Jag håller dig uppdaterad under hela processen och ser till att allt känns rätt innan lansering. <br>
+                Om det behövs finns jag också till hands efteråt för support och vidareutveckling.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section id="om" class="section">
+        <header class="section-header">
+          <h2>Om mig</h2>
+          <div class="about-photo">
+  <img src="ronjaprofil.webp" alt="Ronja Fagerdahl" />
+</div>
+
+          <p class ="about-tagline">
+            Mjuk teknik, starka resultat - med fokus på människan bakom skärmen.
+          </p>
+        </header>
+
+        <div class="about-layout">
+          <div>
+            <p>
+                <strong>Mitt namn är Ronja Fagerdahl.</strong> <br>
+              Jag har en frilansverksamhet inom webbutveckling och teknisk produktion. <br>
+              Jag arbetar i skärningspunkten mellan <strong>teknik, design & berättande.</strong> <br>
+<br>För mig handlar digitala upplevelser inte bara om kod och funktion - utan om känsla, flöde och mänsklig närvaro. <br>
+              Tekniska lösningar som är lika genomtänkta under ytan som de är starka visuellt - är min melodi. <br><br>
+            <strong class="punchline">Förmågan att fånga genuina ögonblick och omvandla dem till visuella berättelser som berör, är mitt signum. </strong>
+              
+              </p>
+          </div>
+          <div class="about-meta">
+            <div>
+              <span class="meta-label">Styrkor</span>
+              <span class="meta-value">Helhetsupplevelse · Detaljkänsla · Teknisk precision</span>
+            </div>
+            <div>
+              
+<button class="tech-trigger" aria-haspopup="dialog">
+  Visa teknisk stack
+</button>
+
+<div class="tech-modal" id="techModal" aria-hidden="true">
+  <div class="tech-modal-backdrop"></div>
+
+  <div class="tech-modal-content" role="dialog" aria-modal="true">
+    <button class="tech-modal-close" aria-label="Stäng">×</button>
+
+    <h3>Teknisk stack & arbetssätt</h3>
+
+    <p class="tech-intro">
+      Jag väljer och växer med lösningar utifrån funktion, prestanda och långsiktig hållbarhet.
+    </p>
+
+    <div class="tech-section">
+      <strong>Programmeringsspråk</strong>
+      <span>JavaScript · HTML · CSS · Java · C#</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>Frontend</strong>
+      <span>React · Next.js · JSX · Tailwind CSS · Sass · Figma</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>Backend</strong>
+      <span>Node.js · Java · Jakarta EE</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>Databaser</strong>
+      <span>MongoDB · SQL</span>
+    </div>
+
+    <div class="tech-section">
+      <strong>DevOps & kvalitet</strong>
+      <span>Git/GitHub · CI/CD · Docker · Automatiserad testning · TDD</span>
+    </div>
+  </div>
+</div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+   <section id="kontakt" class="section section-alt">
+  <header class="section-header">
+    <h2>Kontakt</h2>
+    <p>
+      Berätta kort vad du behöver hjälp med, så återkommer jag till dig.
+    </p>
+  </header>
+
+  <div class="contact-layout">
+    <div class="contact-block">
+      <p class="contact-line">
+        Mail: <a href="mailto:ronjafagerdahl@gmail.com">ronjafagerdahl@gmail.com</a>
+      </p>
+      <p class="contact-line">
+        LinkedIn:
+        <a href="https://www.linkedin.com/in/ronja-fagerdahl" target="_blank" rel="noreferrer">
+          www.linkedin.com/in/ronja-fagerdahl
+        </a>
+      </p>
+      <p class="contact-note">
+        Du kan skriva direkt här på sidan eller via mail/LinkedIn <br>
+        - det som känns enklast för dig! 
+      </p>
+    </div>
+
+    <form
+      class="contact-form"
+      action="https://formspree.io/f/mvgedrvz"
+      method="POST"
+    >
+      <div class="form-field">
+        <label for="name">Namn</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <div class="form-field">
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-field">
+        <label for="message">Meddelande</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+      </div>
+
+      <button type="submit" class="button primary contact-submit">
+        Skicka meddelande
+      </button>
+
+      <p class="form-hint">
+        Jag återkommer så snart jag kan - oftast inom 1–2 arbetsdagar.
+      </p>
+      <input type="hidden" name="_subject" value="Ny förfrågan från Web & Wonder">
+<input type="hidden" name="_template" value="table">
+    </form>
+  </div>
+</section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2025 Web &amp; Wonder · Frilans webbutveckling & digitalt skapande</p>
+    </footer>
+  </body>
+</html>
