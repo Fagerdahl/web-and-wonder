@@ -118,9 +118,9 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   if (!form) return;
 
   const successMarkup = `
-    <p style="font-size:1rem; margin:0;">
-      🌞 Tack! Ditt meddelande är skickat.<br>
-      Jag återkommer så snart jag kan.
+    <p style="font-family: 'Playfair Display', serif;">
+      ✅ Tack för ditt meddelande! <br> 
+      /Ronja, Web & Wonder
     </p>
   `;
 
@@ -177,3 +177,39 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     if (e.key === "Escape") close();
   });
 })();
+
+// ==============================
+// Header hide on scroll (mobile-friendly)
+// ==============================
+(() => {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+
+  let lastY = window.scrollY;
+  const threshold = 12;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const y = window.scrollY;
+      const diff = y - lastY;
+
+      // Nära toppen – visa alltid
+      if (y < 40) {
+        header.classList.remove("is-hidden");
+        lastY = y;
+        return;
+      }
+
+      // Scroll ner → göm
+      if (diff > threshold) header.classList.add("is-hidden");
+
+      // Scroll upp → visa
+      if (diff < -threshold) header.classList.remove("is-hidden");
+
+      lastY = y;
+    },
+    { passive: true }
+  );
+})();
+
