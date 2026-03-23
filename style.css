@@ -1,5 +1,3 @@
-
-
 :root {
   --bg: #f5f1ea;
   --bg-alt: #ebe3d8;
@@ -26,7 +24,12 @@ body {
 }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   background: radial-gradient(circle at top left, #f8f3ed 0, var(--bg) 45%);
   color: var(--text);
   line-height: 1.7;
@@ -55,7 +58,6 @@ body {
     opacity 0.3s ease;
   will-change: transform, opacity;
 }
-
 
 .brand {
   display: flex;
@@ -436,8 +438,7 @@ body {
   border: 4px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
   position: relative;
-  filter:sepia(0.5);
-
+  filter: sepia(0.5);
 }
 
 /* foto jag */
@@ -446,13 +447,12 @@ body {
   height: 100%;
 }
 
-
 .about-photo::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   pointer-events: none;
 }
 
@@ -475,8 +475,9 @@ body {
 /*-------------------------
   TESTIMONIAL CAROUSEL
 -------------------------*/
+
 .section-testimonials {
-  padding: 4rem 0;
+  padding: 4rem 7vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -484,34 +485,24 @@ body {
 }
 
 .testimonial-carousel {
-  max-width: 700px;
+  position: relative;
   width: 100%;
-}
-
-.testimonial-carousel {
   max-width: 700px;
   margin: 0 auto;
-  position: relative;
   overflow: hidden;
 }
 
 .testimonial-track {
   display: flex;
   transition: transform 0.5s ease;
+  will-change: transform;
 }
 
 .testimonial-slide {
   min-width: 100%;
+  flex: 0 0 100%;
   text-align: center;
-  padding: 2rem 1rem;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.testimonial-slide.active {
-  opacity: 1;
-  transform: translateY(0);
+  padding: 2rem 1.5rem;
 }
 
 .t-avatar {
@@ -522,11 +513,12 @@ body {
 .t-quote {
   font-size: 1rem;
   color: var(--muted);
-  margin-bottom: 0.5rem;
+  margin: 0 auto 0.75rem;
+  max-width: 36rem;
 }
 
 .t-name {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text);
 }
@@ -537,7 +529,102 @@ body {
   top: 50%;
   transform: translateY(-50%);
   border: none;
-  background: rgba(0,0,0,0.1);
+  background: rgba(27, 27, 25, 0.08);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.t-btn:hover {
+  background: rgba(27, 27, 25, 0.14);
+}
+
+.t-btn.prev {
+  left: 0.25rem;
+}
+
+.t-btn.next {
+  right: 0.25rem;
+}
+
+.t-btn[hidden] {
+  display: none;
+}
+
+/* Dots */
+.t-dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.t-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(27, 27, 25, 0.22);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    width 0.2s ease;
+}
+
+.t-dot:hover {
+  background: rgba(27, 27, 25, 0.35);
+}
+
+.t-dot.active {
+  width: 20px;
+  background: var(--accent);
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .section-testimonials {
+    padding: 3rem 5vw;
+  }
+
+  .testimonial-slide {
+    padding: 1.5rem 2.5rem;
+  }
+
+  .t-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1.2rem;
+  }
+
+  .t-btn.prev {
+    left: 0;
+  }
+
+  .t-btn.next {
+    right: 0;
+  }
+}
+
+/* Buttons */
+.t-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -549,8 +636,12 @@ body {
   justify-content: center;
 }
 
-.t-btn.prev { left: 0; }
-.t-btn.next { right: 0; }
+.t-btn.prev {
+  left: 0;
+}
+.t-btn.next {
+  right: 0;
+}
 
 /* Dots */
 .t-dots {
@@ -565,7 +656,7 @@ body {
   height: 8px;
   border-radius: 50%;
   border: none;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 
@@ -579,21 +670,26 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70vw;               /* ändra storlek här */
-  opacity: 0.07;             /* hur tydlig loggan ska vara */
-  z-index: -1;               /* bakom allt innehåll */
+  width: 70vw; /* ändra storlek här */
+  opacity: 0.07; /* hur tydlig loggan ska vara */
+  z-index: -1; /* bakom allt innehåll */
   pointer-events: none;
   user-select: none;
 }
 
 @keyframes slowMove {
-  0% { transform: translateX(-50%) translateY(0); }
-  100% { transform: translateX(-49%) translateY(3px); }
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    transform: translateX(-49%) translateY(3px);
+  }
 }
 
 .logo-watermark {
-  animation: fadeWatermark 2s ease-out forwards,
-             slowMove 8s ease-in-out infinite alternate;
+  animation:
+    fadeWatermark 2s ease-out forwards,
+    slowMove 8s ease-in-out infinite alternate;
 }
 
 .tech-trigger {
@@ -632,7 +728,7 @@ body {
   background: #fdf7ef;
   border-radius: 16px;
   padding: 2rem 2.2rem;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
 }
 
 .tech-modal-content h3 {
@@ -740,12 +836,10 @@ body {
   }
 }
 
-
-
 /* RESPONSIVE */
 
 @media (max-width: 900px) {
-.hero {
+  .hero {
     display: flex;
     flex-direction: column;
     gap: 1rem;

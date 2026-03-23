@@ -9,12 +9,34 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 // ==============================
 (() => {
   const track = $(".testimonial-track");
-  const slides = $$(".testimonial-slide");
+  const dotsWrap = $(".t-dots");
   const prev = $(".t-btn.prev");
   const next = $(".t-btn.next");
-  const dots = $$(".t-dot");
 
-  if (!track || slides.length === 0) return;
+  if (!track || !dotsWrap) return;
+
+  // Recensioner ska in här med "approved: true" för att visas på sidan
+  const reviews = [
+    // Exempel:
+    // {
+    //   quote:
+    //     "Ronja var lyhörd genom hela processen och skapade en lösning som kändes både genomtänkt och professionell.",
+    //   name: "Anna",
+    //   role: "Företagare",
+    //   company; "Anna's Bakery",
+    //   approved: true,
+    // },
+    // {
+    //   quote:
+    //     "Samarbetet var smidigt, tydligt och resultatet speglade verkligen vårt varumärke.",
+    //   name: "Johan",
+    //   role: "Grundare",
+    //   company; "Johan's Consulting",
+    //   approved: true,
+    // },
+  ];
+
+  const approvedReviews = reviews.filter((review) => review.approved);
 
   let index = 0;
   let intervalId = null;
@@ -23,10 +45,87 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const AUTO_DELAY = 6000;
   const RESTART_DELAY = 8000;
 
+  const escapeHtml = (value) =>
+    String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+
+  const buildMarkup = () => {
+    if (approvedReviews.length === 0) {
+      track.innerHTML = `
+        <article class="testimonial-slide active">
+          <div class="t-avatar">✨</div>
+          <p class="t-quote">Kundomdömen kommer snart.</p>
+          <p class="t-name">Web &amp; Wonder</p>
+        </article>
+      `;
+      dotsWrap.innerHTML = "";
+      if (prev) prev.hidden = true;
+      if (next) next.hidden = true;
+      return;
+    }
+
+    if (prev) prev.hidden = approvedReviews.length <= 1;
+    if (next) next.hidden = approvedReviews.length <= 1;
+
+    track.innerHTML = approvedReviews
+      .map(
+        (review, i) => `
+          <article class="testimonial-slide ${i === 0 ? "active" : ""}">
+            <div class="t-avatar">✨</div>
+            <p class="t-quote">“${escapeHtml(review.quote)}”</p>
+           <p class="t-name">
+  ${escapeHtml(review.name)}
+  ${
+    review.role || review.company
+      ? ` · ${escapeHtml(
+          [review.role, review.company].filter(Boolean).join(", "),
+        )}`
+      : ""
+  }
+</p>
+          </article>
+        `,
+      )
+      .join("");
+
+    dotsWrap.innerHTML = approvedReviews
+      .map(
+        (_, i) => `
+          <button
+            class="t-dot ${i === 0 ? "active" : ""}"
+            type="button"
+            data-index="${i}"
+            aria-label="Visa kundomdöme ${i + 1}"
+            aria-selected="${i === 0 ? "true" : "false"}"
+          ></button>
+        `,
+      )
+      .join("");
+  };
+
+  buildMarkup();
+
+  const slides = $$(".testimonial-slide", track);
+  const dots = $$(".t-dot", dotsWrap);
+
+  if (slides.length === 0) return;
+
   const render = () => {
     track.style.transform = `translateX(-${index * 100}%)`;
-    slides.forEach((s, i) => s.classList.toggle("active", i === index));
-    dots.forEach((d, i) => d.classList.toggle("active", i === index));
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === index);
+    });
+
+    dots.forEach((dot, i) => {
+      const isActive = i === index;
+      dot.classList.toggle("active", isActive);
+      dot.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
   };
 
   const setIndex = (nextIndex) => {
@@ -34,7 +133,10 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     render();
   };
 
-  const step = (dir) => setIndex(index + dir);
+  const step = (dir) => {
+    if (slides.length <= 1) return;
+    setIndex(index + dir);
+  };
 
   const stopAuto = () => {
     if (intervalId) clearInterval(intervalId);
@@ -43,12 +145,14 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   const startAuto = () => {
     stopAuto();
+    if (slides.length <= 1) return;
     intervalId = setInterval(() => step(1), AUTO_DELAY);
   };
 
   const pauseAndRestart = () => {
     stopAuto();
-    if (restartTimeoutId) clearTimeout(restartTimeoutId);
+    clearTimeout(restartTimeoutId);
+    if (slides.length <= 1) return;
     restartTimeoutId = setTimeout(startAuto, RESTART_DELAY);
   };
 
@@ -62,12 +166,16 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     pauseAndRestart();
   });
 
-  dots.forEach((dot, i) =>
-    dot.addEventListener("click", () => {
-      setIndex(i);
-      pauseAndRestart();
-    })
-  );
+  dotsWrap.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement)) return;
+
+    const nextIndex = Number(target.dataset.index);
+    if (Number.isNaN(nextIndex)) return;
+
+    setIndex(nextIndex);
+    pauseAndRestart();
+  });
 
   render();
   startAuto();
@@ -139,7 +247,7 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
       form.innerHTML = successMarkup;
     } catch {
       alert(
-        "Något gick fel. Försök igen senare, eller mejla mig på ronjafagerdahl@gmail.com."
+        "Något gick fel. Försök igen senare, eller mejla mig på ronjafagerdahl@gmail.com.",
       );
     }
   });
@@ -209,7 +317,6 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
       lastY = y;
     },
-    { passive: true }
+    { passive: true },
   );
 })();
-
