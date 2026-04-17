@@ -58,7 +58,7 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
       track.innerHTML = `
         <article class="testimonial-slide active">
           <div class="t-avatar">✨</div>
-          <p class="t-quote">Kundomdömen kommer snart.</p>
+          <p class="t-quote">Verifierade omdömen kommer snart.</p>
           <p class="t-name">Web &amp; Wonder</p>
         </article>
       `;
