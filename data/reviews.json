@@ -1,0 +1,23 @@
+[
+  {
+    "id": "17166928-1dc2-4b92-84a5-439a20e842e0",
+    "name": "Ronja",
+    "email": "ronjafagerda@gmail.com",
+    "role": "lkban",
+    "company": "akban öalk",
+    "quote": "önaökaböakböakbaö.kba",
+    "approved": false,
+    "createdAt": "2026-08-20T16:57:51.058Z",
+    "approvedAt": "2026-08-20T17:00:33.696Z"
+  },
+  {
+    "id": "33ae74de-ab45-4a68-a94c-cf22d46703ab",
+    "name": "ronja",
+    "email": "ronja@mail.se",
+    "role": "VD",
+    "company": "bananer",
+    "quote": "kanongött skitbra service",
+    "approved": false,
+    "createdAt": "2026-08-26T13:55:40.311Z"
+  }
+]
