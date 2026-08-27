@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Recensioner | Web & Wonder Admin</title>
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="./style.css"
+    />
+
+    <script
+      defer
+      src="./admin.js"
+    ></script>
+  </head>
+
+  <body class="admin-page">
+    <main class="admin-container">
+
+      <!-- ==============================
+           HEADER
+      ============================== -->
+
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">
+            Web & Wonder
+          </p>
+
+          <h1>
+            Recensioner
+          </h1>
+
+          <p>
+            Här hanterar du recensioner som skickats in från hemsidan.
+          </p>
+        </div>
+
+        <a
+          href="/"
+          class="button ghost"
+        >
+          Till hemsidan
+        </a>
+      </header>
+
+      <!-- ==============================
+           ADMIN LOGIN
+      ============================== -->
+
+      <section
+        class="admin-login"
+        data-admin-login
+      >
+        <h2>
+          Admin
+        </h2>
+
+        <p>
+          Ange din adminnyckel för att hantera recensioner.
+        </p>
+
+        <form class="admin-login-form">
+
+          <div class="form-field">
+            <label for="admin-key">
+              Adminnyckel
+            </label>
+
+            <input
+              type="password"
+              id="admin-key"
+              name="admin-key"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="button primary"
+          >
+            Logga in
+          </button>
+
+          <p
+            class="admin-message"
+            aria-live="polite"
+          ></p>
+        </form>
+      </section>
+
+      <!-- ==============================
+           REVIEWS
+      ============================== -->
+
+      <section
+        class="admin-reviews"
+        data-admin-reviews
+        hidden
+      >
+
+        <!-- TOOLBAR -->
+
+        <div class="admin-toolbar">
+          <div>
+            <h2>
+              Inskickade recensioner
+            </h2>
+
+            <p data-review-count>
+              Laddar recensioner...
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="button ghost"
+            data-logout
+          >
+            Logga ut
+          </button>
+        </div>
+
+        <!--
+          admin.js fyller automatiskt
+          denna div med recensionerna.
+        -->
+
+        <div
+          class="admin-review-list"
+          data-review-list
+        ></div>
+
+      </section>
+    </main>
+  </body>
+</html>

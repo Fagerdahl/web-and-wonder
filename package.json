@@ -1,0 +1,26 @@
+{
+  "name": "web-and-wonder",
+  "version": "1.0.0",
+  "description": "This is a Repository for my homepage Web & Wonder",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fagerdahl/web-and-wonder.git"
+  },
+  "keywords": [],
+  "author": "Ronja Fagerdahl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fagerdahl/web-and-wonder/issues"
+  },
+  "homepage": "https://github.com/Fagerdahl/web-and-wonder#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
