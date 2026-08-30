@@ -1,4 +1,14 @@
 // ==============================
+// API
+// ==============================
+
+const API_BASE_URL =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:3000"
+    : "https://api.webwonder.se";
+
+// ==============================
 // Helpers FOR A DRY CODEBASE
 // ==============================
 
@@ -61,15 +71,21 @@ const escapeHtml = (value) =>
 
   const loadReviews = async () => {
     try {
-      const response = await fetch("/api/reviews");
+      const response = await fetch(`${API_BASE_URL}/api/reviews`);
 
       if (!response.ok) {
         throw new Error("Kunde inte hämta recensionerna.");
       }
 
+      const contentType = response.headers.get("content-type");
+
+      if (!contentType?.includes("application/json")) {
+        throw new Error("Servern returnerade ett oväntat svar.");
+      }
+
       reviews = await response.json();
     } catch (error) {
-      console.error(error);
+      console.error("Kunde inte hämta recensioner:", error);
 
       showEmptyState("Kunde inte ladda kundomdömen just nu.");
 
@@ -143,9 +159,12 @@ const escapeHtml = (value) =>
   buildMarkup();
 
   const slides = $$(".testimonial-slide", track);
+
   const dots = $$(".t-dot", dotsWrap);
 
-  if (reviews.length === 0) return;
+  if (reviews.length === 0) {
+    return;
+  }
 
   const render = () => {
     track.style.transform = `translateX(-${index * 100}%)`;
@@ -170,7 +189,9 @@ const escapeHtml = (value) =>
   };
 
   const step = (direction) => {
-    if (slides.length <= 1) return;
+    if (slides.length <= 1) {
+      return;
+    }
 
     setIndex(index + direction);
   };
@@ -186,7 +207,9 @@ const escapeHtml = (value) =>
   const startAuto = () => {
     stopAuto();
 
-    if (slides.length <= 1) return;
+    if (slides.length <= 1) {
+      return;
+    }
 
     intervalId = setInterval(() => step(1), AUTO_DELAY);
   };
@@ -198,7 +221,9 @@ const escapeHtml = (value) =>
       clearTimeout(restartTimeoutId);
     }
 
-    if (slides.length <= 1) return;
+    if (slides.length <= 1) {
+      return;
+    }
 
     restartTimeoutId = setTimeout(startAuto, RESTART_DELAY);
   };
@@ -222,7 +247,9 @@ const escapeHtml = (value) =>
 
     const nextIndex = Number(target.dataset.index);
 
-    if (Number.isNaN(nextIndex)) return;
+    if (Number.isNaN(nextIndex)) {
+      return;
+    }
 
     setIndex(nextIndex);
     pauseAndRestart();
@@ -238,14 +265,20 @@ const escapeHtml = (value) =>
 
 (() => {
   const reviewSection = $(".review-section");
+
   const toggle = $(".review-toggle");
+
   const wrapper = $(".review-form-wrapper");
 
-  if (!reviewSection || !toggle || !wrapper) return;
+  if (!reviewSection || !toggle || !wrapper) {
+    return;
+  }
 
   const setOpen = (isOpen) => {
     toggle.setAttribute("aria-expanded", String(isOpen));
+
     wrapper.hidden = !isOpen;
+
     toggle.classList.toggle("is-open", isOpen);
 
     if (isOpen) {
@@ -257,30 +290,31 @@ const escapeHtml = (value) =>
 
   // Klick på recensionsrutan → öppna/stäng
   toggle.addEventListener("click", () => {
-    const isOpen =
-      toggle.getAttribute("aria-expanded") === "true";
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
 
     setOpen(!isOpen);
   });
 
   // Dubbelklick utanför → stäng
   document.addEventListener("dblclick", (event) => {
-    const isOpen =
-      toggle.getAttribute("aria-expanded") === "true";
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
 
     if (!isOpen) return;
 
-    if (reviewSection.contains(event.target)) return;
+    if (reviewSection.contains(event.target)) {
+      return;
+    }
 
     setOpen(false);
   });
 
   // ESC → stäng
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
+    if (event.key !== "Escape") {
+      return;
+    }
 
-    const isOpen =
-      toggle.getAttribute("aria-expanded") === "true";
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
 
     if (!isOpen) return;
 
@@ -295,7 +329,9 @@ const escapeHtml = (value) =>
 
 (() => {
   const form = $(".review-form");
+
   const message = $(".review-message");
+
   const submitButton = $(".review-submit");
 
   if (!form) return;
@@ -304,6 +340,7 @@ const escapeHtml = (value) =>
     if (!message) return;
 
     message.textContent = text;
+
     message.classList.remove("success", "error");
 
     if (type) {
@@ -318,10 +355,15 @@ const escapeHtml = (value) =>
 
     const review = {
       name: String(formData.get("name") ?? "").trim(),
+
       email: String(formData.get("email") ?? "").trim(),
+
       role: String(formData.get("role") ?? "").trim(),
+
       company: String(formData.get("company") ?? "").trim(),
+
       quote: String(formData.get("quote") ?? "").trim(),
+
       website: String(formData.get("website") ?? "").trim(),
     };
 
@@ -329,14 +371,12 @@ const escapeHtml = (value) =>
 
     if (!review.name) {
       setMessage("Du måste ange ditt namn.", "error");
+
       return;
     }
 
     if (review.quote.length < 10) {
-      setMessage(
-        "Recensionen måste innehålla minst 10 tecken.",
-        "error",
-      );
+      setMessage("Recensionen måste innehålla minst 10 tecken.", "error");
 
       return;
     }
@@ -344,10 +384,11 @@ const escapeHtml = (value) =>
     try {
       if (submitButton) {
         submitButton.disabled = true;
+
         submitButton.textContent = "Skickar...";
       }
 
-      const response = await fetch("/api/reviews", {
+      const response = await fetch(`${API_BASE_URL}/api/reviews`, {
         method: "POST",
 
         headers: {
@@ -358,13 +399,18 @@ const escapeHtml = (value) =>
         body: JSON.stringify(review),
       });
 
-      const result = await response.json();
+      const contentType = response.headers.get("content-type");
+
+      const result = contentType?.includes("application/json")
+        ? await response.json()
+        : null;
 
       if (!response.ok) {
-        throw new Error(
-          result.message ||
-            "Recensionen kunde inte skickas.",
-        );
+        throw new Error(result?.message || "Recensionen kunde inte skickas.");
+      }
+
+      if (!result) {
+        throw new Error("Servern returnerade ett oväntat svar.");
       }
 
       form.reset();
@@ -378,14 +424,13 @@ const escapeHtml = (value) =>
       console.error("Kunde inte skicka recension:", error);
 
       setMessage(
-        error instanceof Error
-          ? error.message
-          : "Något gick fel. Försök igen.",
+        error instanceof Error ? error.message : "Något gick fel. Försök igen.",
         "error",
       );
     } finally {
       if (submitButton) {
         submitButton.disabled = false;
+
         submitButton.textContent = "Skicka recension";
       }
     }
@@ -398,9 +443,12 @@ const escapeHtml = (value) =>
 
 (() => {
   const trigger = $(".tech-trigger");
+
   const modal = $("#techModal");
 
-  if (!trigger || !modal) return;
+  if (!trigger || !modal) {
+    return;
+  }
 
   const closeBtn = $(".tech-modal-close", modal);
 
@@ -476,7 +524,9 @@ const escapeHtml = (value) =>
     try {
       const response = await fetch(form.action, {
         method: "POST",
+
         body: new FormData(form),
+
         headers: {
           Accept: "application/json",
         },
@@ -501,9 +551,12 @@ const escapeHtml = (value) =>
 
 (() => {
   const toggle = $(".nav-toggle");
+
   const nav = $(".main-nav");
 
-  if (!toggle || !nav) return;
+  if (!toggle || !nav) {
+    return;
+  }
 
   const setOpen = (isOpen) => {
     nav.classList.toggle("is-open", isOpen);
@@ -557,6 +610,7 @@ const escapeHtml = (value) =>
     "scroll",
     () => {
       const y = window.scrollY;
+
       const diff = y - lastY;
 
       if (y < 40) {
