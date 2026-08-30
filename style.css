@@ -360,7 +360,7 @@ p {
 
   color: var(--text);
 
-  font-size: 0.9;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.01em;
 
@@ -2187,5 +2187,577 @@ body {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+/* =========================================================
+   21. RESPONSIVE HARDENING
+   Behåller originaldesignen men gör layouten robust från
+   små mobiler till stora desktops.
+   ========================================================= */
+
+/* Prevent long content from forcing horizontal overflow */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.hero,
+.section,
+.section-testimonials,
+#om,
+.contact-layout,
+.grid.cards,
+.process-list,
+.review-section,
+.testimonial-carousel {
+  min-width: 0;
+}
+
+.hero-content,
+.hero-panel,
+.card,
+.process-list li,
+.contact-block,
+.contact-form,
+.about-layout,
+.review-toggle-text {
+  min-width: 0;
+}
+
+p,
+span,
+a,
+.meta-value,
+.hero-tag-value,
+.tech-section {
+  overflow-wrap: break-word;
+}
+
+/* Very large screens: keep readable line lengths and composition */
+@media (min-width: 1440px) {
+  :root {
+    --content-width: 1240px;
+    --page-padding: clamp(3rem, 5vw, 6rem);
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.75fr);
+  }
+}
+
+/* Laptop / tablet landscape */
+@media (max-width: 1180px) {
+  .site-header {
+    gap: 1rem;
+  }
+
+  .main-nav {
+    gap: 0.15rem;
+  }
+
+  .main-nav a {
+    padding-inline: 0.65rem;
+    font-size: 0.86rem;
+  }
+
+  .main-nav a::after {
+    left: 0.65rem;
+    right: 0.65rem;
+  }
+
+  .brand {
+    gap: 0.85rem;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .grid.cards,
+  .process-list,
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: 0;
+  }
+
+  .contact-block {
+    max-width: none;
+  }
+
+  #om {
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    column-gap: clamp(1.75rem, 4vw, 3rem);
+  }
+}
+
+/* Switch navigation before it becomes cramped */
+@media (max-width: 860px) {
+  .site-header {
+    min-height: 76px;
+  }
+
+  .logo {
+    height: 54px;
+  }
+
+  .nav-toggle {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  .main-nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: var(--page-padding);
+    right: var(--page-padding);
+    z-index: 60;
+
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+
+    max-height: calc(100dvh - 110px);
+    padding: var(--space-sm);
+    overflow-y: auto;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .main-nav.is-open {
+    display: flex;
+  }
+
+  .main-nav a {
+    width: 100%;
+    padding: 0.8rem 0.7rem;
+  }
+
+  .main-nav a[href="#kontakt"] {
+    margin: 0.4rem 0 0;
+    padding: 0.7rem;
+    text-align: center;
+  }
+
+  .main-nav a::after {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  :root {
+    --page-padding: clamp(1rem, 5vw, 1.5rem);
+    --space-3xl: 3.5rem;
+  }
+
+  h1 {
+    font-size: clamp(2.35rem, 12vw, 3.4rem);
+  }
+
+  h2 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  .site-header {
+    min-height: 68px;
+  }
+
+  .logo {
+    height: 48px;
+  }
+
+  .brand {
+    min-width: 0;
+    gap: 0.65rem;
+  }
+
+  .brand-name,
+  .site-header .brand-name {
+    max-width: min(54vw, 250px);
+    overflow: hidden;
+    font-size: clamp(0.78rem, 3.6vw, 0.95rem);
+    text-overflow: ellipsis;
+  }
+
+  .hero {
+    gap: var(--space-xl);
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .hero::before {
+    top: 1rem;
+    right: -5rem;
+    width: 240px;
+  }
+
+  .hero-text {
+    font-size: 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .section,
+  .section-testimonials {
+    padding-block: 3.5rem;
+  }
+
+  .card,
+  .process-list li,
+  .contact-block,
+  .contact-form {
+    padding: clamp(1.15rem, 5vw, 1.5rem);
+  }
+
+  #om {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "photo"
+      "tagline"
+      "content";
+    gap: var(--space-xl);
+    padding: 3.5rem var(--page-padding);
+  }
+
+  #om > .section-header h2 {
+    font-size: clamp(2.4rem, 12vw, 3.3rem);
+    text-align: center;
+  }
+
+  .about-photo {
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .about-tagline {
+    max-width: 100%;
+    margin: 0;
+    font-size: clamp(1.45rem, 7vw, 1.7rem);
+    text-align: center;
+  }
+
+  .about-layout,
+  .about-layout > div:first-child > p,
+  .punchline {
+    max-width: 100%;
+  }
+
+  .review-section {
+    width: min(calc(100% - 2rem), 780px);
+    margin-block: 3.5rem;
+  }
+
+  .testimonial-slide {
+    padding: 2.5rem 2.8rem;
+  }
+
+  .t-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .t-btn.prev {
+    left: 0.25rem;
+  }
+
+  .t-btn.next {
+    right: 0.25rem;
+  }
+
+  .review-toggle {
+    gap: var(--space-sm);
+    padding: var(--space-md);
+  }
+
+  .review-toggle-icon {
+    font-size: 1.4rem;
+  }
+
+  .review-toggle-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .review-form-wrapper {
+    padding: var(--space-md);
+  }
+
+  .review-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .review-submit {
+    width: 100%;
+  }
+
+  .body-logo-bg {
+    width: 120vw;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  :root {
+    --page-padding: 1rem;
+  }
+
+  .site-header {
+    gap: 0.5rem;
+  }
+
+  .brand-name,
+  .site-header .brand-name {
+    max-width: 48vw;
+    letter-spacing: 0.07em;
+  }
+
+  .hero {
+    padding-top: 2.25rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .hero-panel,
+  .card,
+  .process-list li,
+  .contact-block,
+  .contact-form,
+  .testimonial-carousel,
+  .review-section {
+    border-radius: 14px;
+  }
+
+  .testimonial-slide {
+    padding: 2.25rem 2.25rem 3.5rem;
+  }
+
+  .t-quote {
+    font-size: 1.05rem;
+  }
+
+  .review-toggle-description {
+    font-size: 0.84rem;
+  }
+
+  .review-toggle-icon {
+    display: none;
+  }
+
+  .about-layout > div:first-child > p {
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  .punchline {
+    padding: 0.9rem 1rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* =========================================================
+   TECH MODAL — ROBUST ON ALL VIEWPORTS
+   Overlay scrolls; the card is allowed to grow naturally.
+   This avoids the mobile clipping bug caused by combining
+   max-height + internal scrolling + large vertical margins.
+   ========================================================= */
+
+.tech-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: none;
+
+  padding: clamp(1rem, 4vh, 2.5rem) clamp(1rem, 4vw, 2rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tech-modal.active {
+  display: block;
+}
+
+.tech-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+
+  background: rgba(36, 27, 32, 0.58);
+  backdrop-filter: blur(4px);
+}
+
+.tech-modal-content {
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 560px);
+  height: auto;
+  min-height: 0;
+  max-height: none;
+
+  margin: 0 auto;
+  padding: clamp(1.35rem, 4vw, 2rem);
+
+  overflow: visible;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.tech-modal-content h3 {
+  max-width: calc(100% - 3.25rem);
+  margin-bottom: var(--space-sm);
+}
+
+.tech-intro {
+  margin-bottom: var(--space-lg);
+}
+
+.tech-section {
+  width: 100%;
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--border);
+}
+
+.tech-section span {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.tech-modal-close {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  float: right;
+
+  width: 42px;
+  height: 42px;
+
+  margin: -0.35rem -0.35rem 0.35rem 0.75rem;
+  padding: 0;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background: var(--surface);
+  color: var(--muted);
+
+  font-size: 1.5rem;
+  line-height: 1;
+
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.tech-modal-close:hover {
+  background: var(--plum-soft);
+  color: var(--plum-dark);
+}
+
+@media (max-width: 700px) {
+  .tech-modal {
+    padding: 0.75rem;
+  }
+
+  .tech-modal-content {
+    width: 100%;
+    padding: 1.25rem 1rem 1.15rem;
+    border-radius: 16px;
+  }
+
+  .tech-modal-content h3 {
+    font-size: clamp(1.45rem, 7vw, 1.8rem);
+    line-height: 1.15;
+  }
+
+  .tech-intro {
+    margin-bottom: 0.85rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .tech-section {
+    padding: 0.85rem 0;
+  }
+
+  .tech-section strong {
+    margin-bottom: 0.35rem;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  .tech-section span {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+}
+
+@media (max-width: 380px) {
+  .tech-modal {
+    padding: 0.5rem;
+  }
+
+  .tech-modal-content {
+    padding: 1rem 0.85rem;
+    border-radius: 14px;
+  }
+
+  .tech-modal-close {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tech-section span {
+    font-size: 0.84rem;
+  }
+}
+
+/* Landscape phones / short browser windows */
+@media (max-height: 620px) and (orientation: landscape) {
+  .tech-modal {
+    padding-block: 0.5rem;
+  }
+
+  .tech-modal-content {
+    width: min(100%, 680px);
+  }
+
+  .tech-section {
+    padding-block: 0.65rem;
   }
 }
