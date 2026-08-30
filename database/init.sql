@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS reviews (
+  id UUID PRIMARY KEY,
+  name VARCHAR(80) NOT NULL,
+  email VARCHAR(150),
+  role VARCHAR(100),
+  company VARCHAR(100),
+  quote TEXT NOT NULL,
+  approved BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  approved_at TIMESTAMPTZ
+);

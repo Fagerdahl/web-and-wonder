@@ -1,9 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { query } from "./database/database.js";
 
 const app = express();
 
@@ -14,45 +15,23 @@ if (!ADMIN_KEY) {
   throw new Error("ADMIN_KEY saknas i .env");
 }
 
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL saknas i .env");
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const publicDirectory = path.join(__dirname, "public");
-const dataDirectory = path.join(__dirname, "data");
-const reviewsFile = path.join(dataDirectory, "reviews.json");
+// ======================================================
+// MIDDLEWARE
+// ======================================================
 
 app.use(express.json({ limit: "20kb" }));
 app.use(express.static(__dirname));
 
-const ensureReviewsFile = async () => {
-  await mkdir(dataDirectory, { recursive: true });
-
-  try {
-    await readFile(reviewsFile, "utf8");
-  } catch {
-    await writeFile(reviewsFile, "[]", "utf8");
-  }
-};
-
-const readReviews = async () => {
-  await ensureReviewsFile();
-
-  const file = await readFile(reviewsFile, "utf8");
-
-  try {
-    return JSON.parse(file);
-  } catch {
-    return [];
-  }
-};
-
-const saveReviews = async (reviews) => {
-  await writeFile(
-    reviewsFile,
-    JSON.stringify(reviews, null, 2),
-    "utf8",
-  );
-};
+// ======================================================
+// HELPERS
+// ======================================================
 
 const cleanText = (value, maxLength) => {
   if (typeof value !== "string") {
@@ -80,36 +59,25 @@ const requireAdmin = (req, res, next) => {
 
 app.get("/api/reviews", async (req, res) => {
   try {
-    const reviews = await readReviews();
+    const result = await query(`
+      SELECT
+        id,
+        name,
+        role,
+        company,
+        quote,
+        created_at AS "createdAt"
+      FROM reviews
+      WHERE approved = TRUE
+      ORDER BY created_at DESC
+    `);
 
-    const approvedReviews = reviews
-      .filter((review) => review.approved)
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() -
-          new Date(a.createdAt).getTime(),
-      )
-      .map(
-        ({
-          id,
-          name,
-          role,
-          company,
-          quote,
-          createdAt,
-        }) => ({
-          id,
-          name,
-          role,
-          company,
-          quote,
-          createdAt,
-        }),
-      );
-
-    res.json(approvedReviews);
+    res.json(result.rows);
   } catch (error) {
-    console.error(error);
+    console.error(
+      "Kunde inte hämta recensioner:",
+      error,
+    );
 
     res.status(500).json({
       message: "Kunde inte hämta recensionerna.",
@@ -129,7 +97,7 @@ app.post("/api/reviews", async (req, res) => {
     const company = cleanText(req.body.company, 100);
     const quote = cleanText(req.body.quote, 800);
 
-    // Honeypot
+    // Honeypot för enklare bot-skydd
     const website = cleanText(req.body.website, 200);
 
     if (website) {
@@ -156,29 +124,40 @@ app.post("/api/reviews", async (req, res) => {
       });
     }
 
-    const reviews = await readReviews();
+    const id = randomUUID();
 
-    const review = {
-      id: randomUUID(),
-      name,
-      email,
-      role,
-      company,
-      quote,
-      approved: false,
-      createdAt: new Date().toISOString(),
-    };
-
-    reviews.push(review);
-
-    await saveReviews(reviews);
+    await query(
+      `
+        INSERT INTO reviews (
+          id,
+          name,
+          email,
+          role,
+          company,
+          quote,
+          approved
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, FALSE)
+      `,
+      [
+        id,
+        name,
+        email || null,
+        role || null,
+        company || null,
+        quote,
+      ],
+    );
 
     res.status(201).json({
       message:
         "Tack! Din recension har skickats och väntar på godkännande.",
     });
   } catch (error) {
-    console.error(error);
+    console.error(
+      "Kunde inte spara recension:",
+      error,
+    );
 
     res.status(500).json({
       message: "Kunde inte spara recensionen.",
@@ -195,17 +174,27 @@ app.get(
   requireAdmin,
   async (req, res) => {
     try {
-      const reviews = await readReviews();
+      const result = await query(`
+        SELECT
+          id,
+          name,
+          email,
+          role,
+          company,
+          quote,
+          approved,
+          created_at AS "createdAt",
+          approved_at AS "approvedAt"
+        FROM reviews
+        ORDER BY created_at DESC
+      `);
 
-      const sortedReviews = reviews.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() -
-          new Date(a.createdAt).getTime(),
-      );
-
-      res.json(sortedReviews);
+      res.json(result.rows);
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Kunde inte hämta admin-recensioner:",
+        error,
+      );
 
       res.status(500).json({
         message: "Kunde inte hämta recensionerna.",
@@ -223,29 +212,42 @@ app.patch(
   requireAdmin,
   async (req, res) => {
     try {
-      const reviews = await readReviews();
-
-      const review = reviews.find(
-        ({ id }) => id === req.params.id,
+      const result = await query(
+        `
+          UPDATE reviews
+          SET
+            approved = TRUE,
+            approved_at = NOW()
+          WHERE id = $1
+          RETURNING
+            id,
+            name,
+            email,
+            role,
+            company,
+            quote,
+            approved,
+            created_at AS "createdAt",
+            approved_at AS "approvedAt"
+        `,
+        [req.params.id],
       );
 
-      if (!review) {
+      if (result.rowCount === 0) {
         return res.status(404).json({
           message: "Recensionen hittades inte.",
         });
       }
 
-      review.approved = true;
-      review.approvedAt = new Date().toISOString();
-
-      await saveReviews(reviews);
-
       res.json({
         message: "Recensionen är godkänd.",
-        review,
+        review: result.rows[0],
       });
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Kunde inte godkänna recension:",
+        error,
+      );
 
       res.status(500).json({
         message: "Kunde inte godkänna recensionen.",
@@ -263,29 +265,42 @@ app.patch(
   requireAdmin,
   async (req, res) => {
     try {
-      const reviews = await readReviews();
-
-      const review = reviews.find(
-        ({ id }) => id === req.params.id,
+      const result = await query(
+        `
+          UPDATE reviews
+          SET
+            approved = FALSE,
+            approved_at = NULL
+          WHERE id = $1
+          RETURNING
+            id,
+            name,
+            email,
+            role,
+            company,
+            quote,
+            approved,
+            created_at AS "createdAt",
+            approved_at AS "approvedAt"
+        `,
+        [req.params.id],
       );
 
-      if (!review) {
+      if (result.rowCount === 0) {
         return res.status(404).json({
           message: "Recensionen hittades inte.",
         });
       }
 
-      review.approved = false;
-      delete review.approvedAt;
-
-      await saveReviews(reviews);
-
       res.json({
         message: "Recensionen är inte längre publicerad.",
-        review,
+        review: result.rows[0],
       });
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Kunde inte avpublicera recension:",
+        error,
+      );
 
       res.status(500).json({
         message: "Kunde inte uppdatera recensionen.",
@@ -303,27 +318,26 @@ app.delete(
   requireAdmin,
   async (req, res) => {
     try {
-      const reviews = await readReviews();
-
-      const reviewExists = reviews.some(
-        ({ id }) => id === req.params.id,
+      const result = await query(
+        `
+          DELETE FROM reviews
+          WHERE id = $1
+        `,
+        [req.params.id],
       );
 
-      if (!reviewExists) {
+      if (result.rowCount === 0) {
         return res.status(404).json({
           message: "Recensionen hittades inte.",
         });
       }
 
-      const updatedReviews = reviews.filter(
-        ({ id }) => id !== req.params.id,
-      );
-
-      await saveReviews(updatedReviews);
-
       res.status(204).end();
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Kunde inte radera recension:",
+        error,
+      );
 
       res.status(500).json({
         message: "Kunde inte radera recensionen.",
@@ -332,14 +346,39 @@ app.delete(
   },
 );
 
+// ======================================================
+// FRONTEND
+// ======================================================
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-await ensureReviewsFile();
-
-app.listen(PORT, () => {
-  console.log(
-    `Web & Wonder kör på http://localhost:${PORT}`,
+  res.sendFile(
+    path.join(__dirname, "index.html"),
   );
 });
+
+// ======================================================
+// START SERVER
+// ======================================================
+
+const startServer = async () => {
+  try {
+    await query("SELECT 1");
+
+    console.log("PostgreSQL ansluten.");
+
+    app.listen(PORT, () => {
+      console.log(
+        `Web & Wonder kör på http://localhost:${PORT}`,
+      );
+    });
+  } catch (error) {
+    console.error(
+      "Kunde inte ansluta till PostgreSQL:",
+      error,
+    );
+
+    process.exit(1);
+  }
+};
+
+await startServer();
