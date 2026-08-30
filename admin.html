@@ -80,20 +80,37 @@
         </h2>
 
         <p>
-          Ange din adminnyckel för att hantera recensioner.
+          Logga in för att hantera recensioner.
         </p>
 
-        <form class="admin-login-form">
+        <form
+          class="admin-login-form"
+          data-login-form
+        >
 
           <div class="form-field">
-            <label for="admin-key">
-              Adminnyckel
+            <label for="admin-username">
+              Användarnamn
+            </label>
+
+            <input
+              type="text"
+              id="admin-username"
+              name="username"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="admin-password">
+              Lösenord
             </label>
 
             <input
               type="password"
-              id="admin-key"
-              name="admin-key"
+              id="admin-password"
+              name="password"
               autocomplete="current-password"
               required
             />
@@ -108,6 +125,7 @@
 
           <p
             class="admin-message"
+            data-admin-message
             aria-live="polite"
           ></p>
         </form>
@@ -144,11 +162,6 @@
             Logga ut
           </button>
         </div>
-
-        <!--
-          admin.js fyller automatiskt
-          denna div med recensionerna.
-        -->
 
         <div
           class="admin-review-list"

@@ -18,12 +18,20 @@ const reviewsSection = $(
 );
 
 const loginForm = $(
-  ".admin-login-form",
+  "[data-login-form]",
 );
 
-const adminKeyInput = $("#admin-key");
+const usernameInput = $(
+  "#admin-username",
+);
 
-const message = $(".admin-message");
+const passwordInput = $(
+  "#admin-password",
+);
+
+const message = $(
+  "[data-admin-message]",
+);
 
 const reviewList = $(
   "[data-review-list]",
@@ -37,10 +45,9 @@ const logoutButton = $(
   "[data-logout]",
 );
 
-let adminKey =
-  sessionStorage.getItem(
-    "webWonderAdminKey",
-  ) ?? "";
+// ======================================================
+// MESSAGES
+// ======================================================
 
 const setMessage = (
   text,
@@ -55,8 +62,14 @@ const setMessage = (
     "error",
   );
 
-  message.classList.add(type);
+  if (text) {
+    message.classList.add(type);
+  }
 };
+
+// ======================================================
+// API REQUEST
+// ======================================================
 
 const request = async (
   url,
@@ -65,10 +78,10 @@ const request = async (
   const response = await fetch(url, {
     ...options,
 
+    credentials: "same-origin",
+
     headers: {
       ...options.headers,
-
-      "x-admin-key": adminKey,
     },
   });
 
@@ -76,17 +89,31 @@ const request = async (
     return null;
   }
 
-  const result = await response.json();
+  const contentType =
+    response.headers.get(
+      "content-type",
+    );
+
+  const result =
+    contentType?.includes(
+      "application/json",
+    )
+      ? await response.json()
+      : null;
 
   if (!response.ok) {
     throw new Error(
-      result.message ??
+      result?.message ??
         "Något gick fel.",
     );
   }
 
   return result;
 };
+
+// ======================================================
+// DATE
+// ======================================================
 
 const formatDate = (dateString) => {
   if (!dateString) return "";
@@ -100,12 +127,43 @@ const formatDate = (dateString) => {
   ).format(new Date(dateString));
 };
 
+// ======================================================
+// UI STATE
+// ======================================================
+
+const showLogin = () => {
+  if (loginSection) {
+    loginSection.hidden = false;
+  }
+
+  if (reviewsSection) {
+    reviewsSection.hidden = true;
+  }
+};
+
+const showReviews = () => {
+  if (loginSection) {
+    loginSection.hidden = true;
+  }
+
+  if (reviewsSection) {
+    reviewsSection.hidden = false;
+  }
+
+  setMessage("");
+};
+
+// ======================================================
+// RENDER REVIEWS
+// ======================================================
+
 const renderReviews = (reviews) => {
   if (!reviewList) return;
 
   if (reviewCount) {
     const pending = reviews.filter(
-      (review) => !review.approved,
+      (review) =>
+        !review.approved,
     ).length;
 
     reviewCount.textContent =
@@ -156,7 +214,9 @@ const renderReviews = (reviews) => {
               </span>
 
               <h3>
-                ${escapeHtml(review.name)}
+                ${escapeHtml(
+                  review.name,
+                )}
               </h3>
 
               ${
@@ -253,6 +313,10 @@ const renderReviews = (reviews) => {
     .join("");
 };
 
+// ======================================================
+// LOAD REVIEWS
+// ======================================================
+
 const loadReviews = async () => {
   try {
     const reviews = await request(
@@ -260,49 +324,110 @@ const loadReviews = async () => {
     );
 
     renderReviews(reviews);
-
-    loginSection.hidden = true;
-    reviewsSection.hidden = false;
+    showReviews();
 
     return true;
   } catch (error) {
     console.error(error);
 
-    sessionStorage.removeItem(
-      "webWonderAdminKey",
-    );
-
-    adminKey = "";
-
-    loginSection.hidden = false;
-    reviewsSection.hidden = true;
-
-    setMessage(
-      "Fel adminnyckel.",
-    );
+    showLogin();
 
     return false;
   }
 };
+
+// ======================================================
+// CHECK EXISTING SESSION
+// ======================================================
+
+const checkSession = async () => {
+  try {
+    await request(
+      "/api/admin/me",
+    );
+
+    await loadReviews();
+  } catch {
+    showLogin();
+  }
+};
+
+// ======================================================
+// LOGIN
+// ======================================================
 
 loginForm?.addEventListener(
   "submit",
   async (event) => {
     event.preventDefault();
 
-    adminKey =
-      adminKeyInput.value.trim();
+    const username =
+      usernameInput?.value.trim() ??
+      "";
 
-    if (!adminKey) return;
+    const password =
+      passwordInput?.value ?? "";
 
-    sessionStorage.setItem(
-      "webWonderAdminKey",
-      adminKey,
-    );
+    if (!username || !password) {
+      setMessage(
+        "Ange användarnamn och lösenord.",
+      );
 
-    await loadReviews();
+      return;
+    }
+
+    const submitButton =
+      loginForm.querySelector(
+        'button[type="submit"]',
+      );
+
+    try {
+      if (submitButton) {
+        submitButton.disabled = true;
+      }
+
+      setMessage("");
+
+      await request(
+        "/api/admin/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        },
+      );
+
+      if (passwordInput) {
+        passwordInput.value = "";
+      }
+
+      await loadReviews();
+    } catch (error) {
+      console.error(error);
+
+      setMessage(
+        error.message ??
+          "Kunde inte logga in.",
+      );
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+    }
   },
 );
+
+// ======================================================
+// REVIEW ACTIONS
+// ======================================================
 
 reviewList?.addEventListener(
   "click",
@@ -325,6 +450,10 @@ reviewList?.addEventListener(
 
     const action =
       button.dataset.action;
+
+    if (!reviewId || !action) {
+      return;
+    }
 
     try {
       button.disabled = true;
@@ -370,7 +499,20 @@ reviewList?.addEventListener(
     } catch (error) {
       console.error(error);
 
-      alert(
+      if (
+        error.message ===
+        "Du är inte behörig."
+      ) {
+        showLogin();
+
+        setMessage(
+          "Din session har gått ut. Logga in igen.",
+        );
+
+        return;
+      }
+
+      window.alert(
         error.message ??
           "Något gick fel.",
       );
@@ -380,25 +522,45 @@ reviewList?.addEventListener(
   },
 );
 
+// ======================================================
+// LOGOUT
+// ======================================================
+
 logoutButton?.addEventListener(
   "click",
-  () => {
-    sessionStorage.removeItem(
-      "webWonderAdminKey",
+  async () => {
+    try {
+      await request(
+        "/api/admin/logout",
+        {
+          method: "POST",
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (usernameInput) {
+      usernameInput.value = "";
+    }
+
+    if (passwordInput) {
+      passwordInput.value = "";
+    }
+
+    showLogin();
+
+    setMessage(
+      "Du är utloggad.",
+      "success",
     );
 
-    adminKey = "";
-
-    reviewsSection.hidden = true;
-    loginSection.hidden = false;
-
-    if (adminKeyInput) {
-      adminKeyInput.value = "";
-      adminKeyInput.focus();
-    }
+    usernameInput?.focus();
   },
 );
 
-if (adminKey) {
-  loadReviews();
-}
+// ======================================================
+// START
+// ======================================================
+
+checkSession();
